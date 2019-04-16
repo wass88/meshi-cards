@@ -5,11 +5,18 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test-lib": "node lib/test_shop.js"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "material-design-icons-iconfont": "^3.0.3",
+    "request-promise": "^4.2.4",
+    "roboto-fontface": "^0.10.0",
+    "tokoro": "^0.2.1",
+    "vue": "^2.6.10",
+    "vuetify": "^1.5.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.6.0",
@@ -17,7 +24,12 @@
     "@vue/cli-service": "^3.6.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.17.1",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-vue": "^5.0.0",
+    "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
@@ -29,7 +41,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": 0
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
