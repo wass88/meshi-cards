@@ -8,3 +8,4 @@ var config = {
   messagingSenderId: "XXXX"
 };
 window.firebase.initializeApp(config);
+window.api_url = "https://XXXX.net"

@@ -2,15 +2,16 @@
   <div class="card">
     <div class="header">
       <div class="cost">
-        <span> {{info.menus[0].price / 10}} </span>
+        <span v-if="info.menus[0]"> {{info.menus[0].price / 10}} </span>
       </div>
       <div class="name">
       {{ info.name }}
       </div>
     </div>
-    <div class="image" :style="{backgroundImage: 'url('+info.menus[0].img+')'}"> </div>
+    <div class="image" :style="{backgroundImage:
+       'url('+(info.menus[0]?info.menus[0].img:'')+')'}"> </div>
     <div class="content">
-      {{ info.menus[0].name }} {{ info.menus[0].price }}
+      {{ info.menus[0]?(info.menus[0].name + '' + info.menus[0].price):'??' }}
     </div>
     <div class="flavor">
       {{ info.flavor }}
