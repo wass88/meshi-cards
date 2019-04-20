@@ -30,7 +30,7 @@
   height: 88mm;
   border: 3mm black solid;
   border-radius: 3mm;
-  font-family: 'Kosugi Maru', sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

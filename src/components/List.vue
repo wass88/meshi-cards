@@ -73,7 +73,8 @@ import NewShop from "./NewShop"
         this.editCurrent = index;
       },
       addShop(shop) {
-        this.shops.push(shop)
+        this.shops.push(shop);
+        db_shops.add(shop);
         this.editShop(this.shops.length - 1);
       },
       changedShop() {
@@ -88,14 +89,15 @@ import NewShop from "./NewShop"
       db_shops = db.collection("shops");
       db_shops.onSnapshot(docs=>{
         var source = docs.metadata.hasPendingWrites ? "Local" : "Server";
-        if(source == "Local") return;
         docs.forEach((doc) => {
           const data = doc.data();
           const index = this.shops.findIndex(s=>s.id == doc.id);
           if (index == -1) {
             this.shops.push({id:doc.id, ...data});
           } else {
-            this.$set(this.shops, index, data);
+            if(source == "Server") {
+              this.$set(this.shops, index, data);
+            }
           }
         });
       });

@@ -35,7 +35,7 @@
     name: '名前',
     close_day: 'なし',
     open_time: '11:00-22:30',
-    menus: [],
+    menus: [{'name':'', 'url': '', 'price':42}],
     tags: [],
     flavor: 'おいしい',
   };
