@@ -1,7 +1,11 @@
 <template>
   <div class="card">
     <div class="cost">
-      <span v-if="info.menus[0]"> {{info.menus[0].price / 10}} </span>
+      <div v-if="info.menus[0]"> 
+        <div class="cost100"> {{dig100}} </div>
+        <div class="costdot" v-if="dig100<10"> . </div>
+        <div class="cost10" v-if="dig100<10"> {{dig10}} </div>
+      </div>
     </div>
     <div class="header">
       <div class="name">
@@ -18,13 +22,13 @@
       </div>
     </div>
     <div class="content">
-      {{ info.menus[0]?(info.menus[0].name + '' + info.menus[0].price):'??' }}
+      {{ info.menus[0]?(info.menus[0].price + ' ー ' + info.menus[0].name):'??' }}
     </div>
     <div class="flavor">
       {{ info.flavor }}
     </div>
     <div class="footer">
-      {{ times_str }}
+      {{ times_str }} {{ this.info.f_open_desc }}
       <div class="dayline">
         <div class="dayinfo" v-for="(day, i) in dayinfo" :key="i">
           <div v-if="day.full" class="day day_full">{{day.day}}</div>
@@ -57,6 +61,8 @@ export default {
     }
   },
   computed: {
+    dig100() { return 0|(((0|this.info.menus[0].price)+9)/100); },
+    dig10() { return (0|(((0|this.info.menus[0].price)+9)/10))%10; },
     posX() { return `${this.pos[0]}mm`; },
     posY() { return `${this.pos[1]}mm`; },
     pos() {
@@ -191,6 +197,18 @@ export default {
   margin-left: 4px;
   color: #111;
 }
+.cost .cost100 {
+  margin-top: -1mm;
+}
+.cost .costdot {
+  margin-top: -10mm;
+  margin-left: 3mm;
+}
+.cost .cost10 {
+  margin-top: -9mm;
+  margin-left: 4mm;
+  font-size: 5mm;
+}
 .name {
   margin-left: 39px;
   text-align: center;
@@ -206,6 +224,8 @@ export default {
   height: 30mm;
 }
 .image {
+  border-top: solid 1mm black;
+  border-bottom: solid 1mm black;
   height: 30mm;
   background-size: cover;
 }
@@ -229,10 +249,13 @@ export default {
   flex-grow: 1;
   background-color: hsl(50, 100%, 86%);
   font-size: 3mm;
+  padding: 3mm;
 }
 .flavor{
   background-color: hsl(50, 100%, 86%);
   font-size: 3mm;
+  padding-left: 3mm;
+  padding-bottom: 3mm;
 }
 
 .footer {

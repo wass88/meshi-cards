@@ -34,9 +34,9 @@
   const default_shop = {
     name: '名前',
     close_day: 'なし',
-    open_time: '11:00-22:30',
+    open_time: '12:40-15:42',
     f_open_day: [-1,-1,-1,-1,-1,-1,-1],
-    f_open_times: [12*60,15*60],
+    f_open_times: [12*60+42,15*60+42],
     f_open_desc: '',
     menus: [{'name':'', 'url': '', 'price':42}],
     tags: [],
