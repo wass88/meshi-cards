@@ -18,7 +18,7 @@
             <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
             <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
             <template v-for="(menu, i) in nowShop.menus">
-              <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @change="changedShop" label="値段"></v-text-field></v-flex>
+              <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @change="changedShop" label="税込値段"></v-text-field></v-flex>
               <v-flex xs7 :key="'menun'+i"><v-text-field v-model="menu.name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
               <template v-if="i == nowShop.menus.length - 1">
                 <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''">追加</v-btn></v-flex>
@@ -33,7 +33,7 @@
 
             <v-flex xs12><v-text-field v-model="nowShop.open_time" @change="changedShop" label="開店時間情報" disabled></v-text-field></v-flex>
             <v-flex xs2><v-text-field @change="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
-            <v-flex xs2><v-text-field @change="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻"></v-text-field></v-flex>
+            <v-flex xs2><v-text-field @change="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻(LO)"></v-text-field></v-flex>
             <v-flex xs2><v-switch v-model="openRest" label="昼休みあり"></v-switch></v-flex>
 
             <v-flex xs2><v-text-field @change="changedShop" v-model="nightStartTime" label="夜開始時刻" :messages="nightStartTimeErr" :disabled="!openRest"></v-text-field></v-flex>

@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>飯カード</span>
+      <v-toolbar-title class="headline">
+        <span>飯カードα (データ吹っ飛ぶかも)</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
