@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Shop v-for="(shop, i) in shops" :key="shop.name" :info="shop"
+    <Shop v-for="(shop, i) in shops" :key="shop.id" :info="shop"
           @click.native="editShop(i)"></Shop>
 
     <v-btn fab dark fixed bottom right color="indigo"
@@ -73,7 +73,6 @@ import NewShop from "./NewShop"
         this.editCurrent = index;
       },
       addShop(shop) {
-        this.shops.push(shop);
         db_shops.add(shop);
         this.editShop(this.shops.length - 1);
       },

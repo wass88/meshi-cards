@@ -21,10 +21,10 @@
         ></v-autocomplete>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="green darken-1" flat @click="dialog = false">キャンセル</v-btn>
+        <v-btn color="green darken-1" flat @click="$emit('quit')">キャンセル</v-btn>
         <v-spacer/>
-        <v-btn color="green darken-1" flat @click="dialog = false">無から</v-btn>
-        <v-btn color="green darken-1" flat @click="dialog = false; newShopFromTabelog()">食べログから</v-btn>
+        <v-btn color="green darken-1" flat @click="$emit('quit')" disabled>無から</v-btn>
+        <v-btn color="green darken-1" flat @click="newShopFromTabelog()" :disabled="disTabelogBtn">食べログから</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -35,6 +35,9 @@
     name: '名前',
     close_day: 'なし',
     open_time: '11:00-22:30',
+    f_open_day: [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+    f_open_times: [12*60,15*60],
+    f_open_desc: '',
     menus: [{'name':'', 'url': '', 'price':42}],
     tags: [],
     flavor: 'おいしい',
@@ -53,6 +56,7 @@
       newShopLoading: 0,
       newShopSearch: null,
       newShopNameCurrent: "",
+      disTabelogBtn: false,
     }),
     computed: {
       newShopLoadingColor() {
@@ -88,8 +92,10 @@
       newShop(shop) {
         this.$emit("quit");
         this.$emit("addShop", shop);
+        this.disTabelogBtn = false;
       },
       newShopFromTabelog(){ 
+        this.disTabelogBtn = true;
         const url = this.newShopInfo.url;
         console.log("startFetch", url);
         window.fetch(window.api_url+`/tabelog_shop?type=fetch_shop&url=${url}`).then(
