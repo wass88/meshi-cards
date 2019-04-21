@@ -93,7 +93,7 @@ export default {
       return res;
     },
     days_info() {
-      const close = 0;
+      //const close = 0;
       const open = 1;
       const unst = 2;
       const mis = -1;

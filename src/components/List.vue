@@ -1,23 +1,19 @@
 <template>
   <v-container>
     <div class="cards">
-    <Shop style="margin: 2mm" v-for="(shop, i) in shops" :key="shop.id" :info="shop"
+      <Shop style="margin: 2mm" v-for="(shop, i) in shops" :key="shop.id" :info="shop"
           @click.native="editShop(i)"></Shop>
     </div>
-    <v-btn fab dark fixed bottom right color="indigo"
-           @click="newShopShow=true">
-      <v-icon dark>add</v-icon>
-    </v-btn>
     <NewShop @addShop="addShop"
              :show="newShopShow" @quit="newShopShow=false"></NewShop>
 
     <v-dialog v-model="editDialog" hide-overlay transition="dialog-bottom-transition">
-      <v-card>
+      <v-card v-if="nowShop">
         <v-card-title class="headline">ごはん屋さん編集
           - <a :href="nowShop.url" target="_blank" rel="noopener noreferrer">食べログ</a>
           - <a :href="nowShop.url+'dtlmenu/photo/'" target="_blank" rel="noopener noreferrer">メニュー</a>
           </v-card-title>
-        <v-card-text v-if="nowShop">
+        <v-card-text>
           <v-form ref="editform"><v-layout row wrap>
             <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
             <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
@@ -99,7 +95,7 @@ import NewShop from "./NewShop"
     data: () => ({
       shops: [],
 
-      newShopShow: true,
+      newShopShow: false,
 
       editDialog: false,
       editCurrent: 0,
