@@ -226,7 +226,7 @@ export default {
 }
 .content .dash {
   display: table-cell;
-  padding: 0 2mm;
+  padding: 0 1mm;
   color: #8a8a8a;
 }
 .content .name {

@@ -1,8 +1,9 @@
 <template>
   <v-container>
-    <Shop v-for="(shop, i) in shops" :key="shop.id" :info="shop"
+    <div class="cards">
+    <Shop style="margin: 2mm" v-for="(shop, i) in shops" :key="shop.id" :info="shop"
           @click.native="editShop(i)"></Shop>
-
+    </div>
     <v-btn fab dark fixed bottom right color="indigo"
            @click="newShopShow=true">
       <v-icon dark>add</v-icon>
@@ -12,7 +13,10 @@
 
     <v-dialog v-model="editDialog" hide-overlay transition="dialog-bottom-transition">
       <v-card>
-        <v-card-title class="headline">ごはん屋さん編集</v-card-title>
+        <v-card-title class="headline">ごはん屋さん編集
+          - <a :href="nowShop.url" target="_blank" rel="noopener noreferrer">食べログ</a>
+          - <a :href="nowShop.url+'dtlmenu/photo/'" target="_blank" rel="noopener noreferrer">メニュー</a>
+          </v-card-title>
         <v-card-text v-if="nowShop">
           <v-form ref="editform"><v-layout row wrap>
             <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
@@ -31,18 +35,25 @@
             <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"></v-text-field></v-flex>
 
 
+            <v-flex xs12><v-text-field v-model="nowShop.open_time" @change="changedShop" label="開店時間情報" disabled></v-text-field></v-flex>
             <v-flex xs2><v-text-field @change="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
             <v-flex xs2><v-text-field @change="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻"></v-text-field></v-flex>
-            <v-flex xs2><v-switch v-model="openRest" label="休みあり"></v-switch></v-flex>
+            <v-flex xs2><v-switch v-model="openRest" label="昼休みあり"></v-switch></v-flex>
 
             <v-flex xs2><v-text-field @change="changedShop" v-model="nightStartTime" label="夜開始時刻" :messages="nightStartTimeErr" :disabled="!openRest"></v-text-field></v-flex>
-            <v-flex xs2><v-text-field @change="changedShop" v-model="nightEndTime" label="夜終了時刻" :messages="nightEndTimeErr" :disabled="!openRest"></v-text-field></v-flex>
+            <v-flex xs2><v-text-field @change="changedShop" v-model="nightEndTime" label="夜終了時刻(30h法)" :messages="nightEndTimeErr" :disabled="!openRest"></v-text-field></v-flex>
             <v-flex xs2></v-flex>
 
-            <v-flex xs1 v-for="(day, i) in openTimeDay" :key="'day'+i">
+            <v-flex xs12><v-text-field v-model="nowShop.close_day" @change="changedShop" label="定休日情報" disabled=""></v-text-field></v-flex>
+            <v-flex xs12><v-text-field v-model="nowShop.f_open_desc" @change="changedShop" 
+              label="定休日補足 [木,土: -22:00]など"></v-text-field></v-flex>
+            <v-flex xs1 v-for="(day, i) in nowShop.f_open_day" :key="'day'+i">
               <v-select :label="'月火水木金土日'.split('')[i]+'曜日'"
-                        v-model="openTimeDay[i]" :items="[0,1,2,3]" @change="changedShop"></v-select></v-flex>
-            <v-flex xs5><v-text-field v-model="nowShop.f_open_desc" @change="changedShop" label="定休日補足"></v-text-field></v-flex>
+                        v-model="nowShop.f_open_day[i]"
+                        :items="[{value:-1,text:'不明'},{value:0, text:'休み'},{value:1, text:'営業'},{value:2,text:'補足'}]"
+                         @change="changedShop"></v-select></v-flex>
+            <v-flex xs5><v-btn @click="allDayOpen">全営業</v-btn></v-flex>
+            <v-flex xs12><v-text-field v-model="nowShop.genre" @change="changedShop" label="ジャンル"></v-text-field></v-flex>
           </v-layout></v-form>
         </v-card-text>
       </v-card>
@@ -137,8 +148,9 @@ import NewShop from "./NewShop"
         this.editCurrent = index;
       },
       addShop(shop) {
-        db_shops.add(shop);
-        this.editShop(this.shops.length - 1);
+        db_shops.add(shop).then(()=>{
+          this.editShop(this.shops.length - 1);
+        });
       },
       changedShop() {
         deChangeShop = deChangeShop || window.debounce(()=>{
@@ -151,6 +163,12 @@ import NewShop from "./NewShop"
       },
       removeMenu() {
         this.nowShop.menus.pop();
+      },
+      allDayOpen() {
+        for (let i = 0; i < 7; i++) {
+          this.$set(this.nowShop.f_open_day, i, 1);
+        }
+        this.changedShop();
       }
     },
     mounted() {
@@ -175,5 +193,9 @@ import NewShop from "./NewShop"
 </script>
 
 <style>
+.cards{
+  display: flex;
+  flex-wrap: wrap;
+}
 
 </style>
