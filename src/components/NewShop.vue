@@ -35,7 +35,7 @@
     name: '名前',
     close_day: 'なし',
     open_time: '11:00-22:30',
-    f_open_day: [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+    f_open_day: [-1,-1,-1,-1,-1,-1,-1],
     f_open_times: [12*60,15*60],
     f_open_desc: '',
     menus: [{'name':'', 'url': '', 'price':42}],
