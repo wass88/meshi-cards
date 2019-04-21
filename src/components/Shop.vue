@@ -255,6 +255,10 @@ export default {
   font-size: 3mm;
   padding: 3mm;
 }
+.menu {
+  margin-bottom: 1mm;
+  display: table-row;
+}
 .content .price {
   display: table-cell;
   font-weight: bold;
