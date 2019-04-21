@@ -41,6 +41,7 @@
     menus: [{'name':'', 'url': '', 'price':42}],
     tags: [],
     flavor: 'おいしい',
+    genre: '○食'
   };
   function make_shop(info) {
     return Object.assign(Object.assign({}, default_shop), info);

@@ -18,14 +18,14 @@
             <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
             <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
             <template v-for="(menu, i) in nowShop.menus">
-              <v-flex xs3 :key="'p'+i"><v-text-field v-model="menu.price" @change="changedShop" label="値段"></v-text-field></v-flex>
-              <v-flex xs7 :key="'n'+i"><v-text-field v-model="menu.name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
+              <v-flex xs3 :key="'menup'+i"><v-text-field v-model="menu.price" @change="changedShop" label="値段"></v-text-field></v-flex>
+              <v-flex xs7 :key="'menun'+i"><v-text-field v-model="menu.name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
               <template v-if="i == nowShop.menus.length - 1">
-                <v-flex xs1 :key="'a'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''">追加</v-btn></v-flex>
-                <v-flex xs1 :key="'r'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0">削除</v-btn></v-flex>
+                <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''">追加</v-btn></v-flex>
+                <v-flex xs1 :key="'menur'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0">削除</v-btn></v-flex>
               </template>
               <template v-else>
-                <v-flex xs2 :key="i"></v-flex>
+                <v-flex xs2 :key="'menuz'+i"></v-flex>
               </template>
             </template>
             <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"></v-text-field></v-flex>
@@ -34,24 +34,15 @@
 
             <v-flex xs3><v-text-field @change="changedShop" v-model="startTime" label="開始時刻"></v-text-field></v-flex>
             <v-flex xs3><v-text-field @change="changedShop" v-model="endTime" label="終了時刻"></v-text-field></v-flex>
-            <v-flex xs3> <v-switch v-model="openRest" label="休みあり"></v-switch></v-flex>
-            <v-flex xs3> <v-switch v-model="openSpecial" label="変則あり"></v-switch></v-flex>
+            <v-flex xs3><v-switch v-model="openRest" label="休みあり"></v-switch></v-flex>
 
             <v-flex xs3><v-text-field @change="changedShop" v-model="nightStartTime" label="夜開始時刻"></v-text-field></v-flex>
             <v-flex xs3><v-text-field @change="changedShop" v-model="nightEndTime" label="夜終了時刻"></v-text-field></v-flex>
-            <v-flex xs3><v-text-field @change="changedShop" v-model="specialStartTime" label="特別開始時刻"></v-text-field></v-flex>
-            <v-flex xs3><v-text-field @change="changedShop" v-model="specialEndTime" label="特別終了時刻"></v-text-field></v-flex>
 
-            <v-flex xs1><v-select label="月曜日" v-model="opentimeDay0" :items="timeItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1><v-select label="火曜日" v-model="opentimeDay1" :items="openItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1><v-select label="水曜日" v-model="opentimeDay2" :items="openItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1><v-select label="木曜日" v-model="opentimeDay3" :items="openItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1><v-select label="金曜日" v-model="opentimeDay4" :items="openItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1><v-select label="土曜日" v-model="opentimeDay5" :items="openItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1><v-select label="日曜日" v-model="opentimeDay6" :items="openItems" @change="changedShop"></v-select></v-flex>
-            <v-flex xs1></v-flex>
-            <v-flex xs1><v-select label="一括指定" :items="openItems"></v-select></v-flex>
-            <v-flex xs1><v-btn color="error" @click="setAllOpen">一括</v-btn></v-flex>
+
+            <v-flex xs1 v-for="(day, i) in openTimeDay" :key="'day'+i">
+              <v-select :label="'月火水木金土日'.split('')[i]+'曜日'"
+                        v-model="openTimeDay[i]" :items="[0,1,2,3]" @change="changedShop"></v-select></v-flex>
           </v-layout>
         </v-card-text>
       </v-card>
@@ -90,6 +81,10 @@ import NewShop from "./NewShop"
       editDialog: false,
       editCurrent: 0,
       delay: 500,
+
+      openRest: false,
+      startTime: 0, endTime: 0, nightStartTime: 0, nightEndTime:0,
+      openTimeDay: [1,1,1,1,1,1,1]
     }),
     components: {
       Shop, NewShop
