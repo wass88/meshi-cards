@@ -75,7 +75,7 @@ export default {
       const map_size = 20;
       return [
         (x - centerX) / (2 * radius) * map_size + map_size / 2 - 1,
-        (y - centerY) / (2 * radius) * map_size + map_size / 2
+        -(y - centerY) / (2 * radius) * map_size + map_size / 2 - 1,
       ]
     },
     times_info() {
@@ -234,6 +234,7 @@ export default {
 }
 .flavor{
   background-color: hsl(50, 100%, 86%);
+  font-weight: 300;
   font-size: 3mm;
   padding-left: 3mm;
   padding-bottom: 3mm;
