@@ -14,10 +14,16 @@
       <v-card>
         <v-card-title class="headline">ごはん屋さん編集</v-card-title>
         <v-card-text v-if="nowShop">
-          <v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field>
-          <v-text-field v-model="nowShop.menus[0].name" @change="changedShop" label="メニュー"></v-text-field>
-          <v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field>
-          <v-text-field v-model="nowShop.menus[0].price" @change="changedShop" label="値段"></v-text-field>
+          <v-layout row wrap>
+            <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
+            <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
+            <template v-for="(menu, i) in nowShop.menus">
+              <v-flex xs3 :key="i"><v-text-field v-model="nowShop.menus[0].price" @change="changedShop" label="値段"></v-text-field></v-flex>
+              <v-flex xs9 :key="i"><v-text-field v-model="nowShop.menus[0].name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
+            </template>
+            <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"></v-text-field></v-flex>
+            <v-flex xs12><v-text-field v-model="nowShop.f_open_desc" @change="changedShop" label="定休日補足"></v-text-field></v-flex>
+          </v-layout>
         </v-card-text>
       </v-card>
     </v-dialog>

@@ -22,7 +22,11 @@
       </div>
     </div>
     <div class="content">
-      {{ info.menus[0]?(info.menus[0].price + ' ー ' + info.menus[0].name):'??' }}
+      <div class="menu" v-for="(menu, i) in info.menus" :key="i">
+        <div class="price"> {{menu.price}}</div>
+        <div class="dash"> ー </div>
+        <div class="name"> {{menu.name}}</div>
+      </div>
     </div>
     <div class="flavor">
       {{ info.flavor }}
@@ -209,7 +213,7 @@ export default {
   margin-left: 4mm;
   font-size: 5mm;
 }
-.name {
+.header .name {
   margin-left: 39px;
   text-align: center;
   display: flex;
@@ -250,6 +254,18 @@ export default {
   background-color: hsl(50, 100%, 86%);
   font-size: 3mm;
   padding: 3mm;
+}
+.content .price {
+  display: table-cell;
+  font-weight: bold;
+}
+.content .dash {
+  display: table-cell;
+  padding: 0 2mm;
+  color: #8a8a8a;
+}
+.content .name {
+  display: table-cell;
 }
 .flavor{
   background-color: hsl(50, 100%, 86%);
