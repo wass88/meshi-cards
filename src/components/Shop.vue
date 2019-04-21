@@ -79,7 +79,7 @@ export default {
       ]
     },
     times_info() {
-      const f_open_times = [12*60, 15*60, 17*60, 22*60];
+      const f_open_times = this.info.f_open_times;// [12*60, 15*60, 17*60, 22*60];
       const n_times = f_open_times.length / 2;
       const times = Array.from(new Array(n_times)).map(
         (_,i) => [f_open_times[2*i], f_open_times[2*i+1]]);
@@ -97,7 +97,7 @@ export default {
       const open = 1;
       const unst = 2;
       const mis = -1;
-      const f_open_day = [close, open, unst, mis, close, close, close];
+      const f_open_day = this.info.f_open_day;//[close, open, unst, mis, close, close, close];
       const res = [];
       for (let i = 0; i < 7; i++) {
         const d = f_open_day[i];
