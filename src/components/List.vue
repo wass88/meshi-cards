@@ -1,65 +1,86 @@
 <template>
-  <v-container>
-    <div class="cards">
-      <Shop style="margin: 2mm" v-for="(shop, i) in shops" :key="shop.id" :info="shop"
-          @click.native="editShop(i)"></Shop>
-    </div>
-    <NewShop @addShop="addShop"
-             :show="newShopShow" @quit="newShopShow=false"></NewShop>
+  <v-app>
+    <v-toolbar app>
+      <v-toolbar-title class="headline">
+        <span>飯カードα (データ吹っ飛ぶかも)</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+      <v-btn flat @click="$refs.list.newShopShow=true">カード作成</v-btn>
+      <v-btn flat @click="navShow=true">フィルタ</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
 
-    <v-dialog v-model="editDialog" hide-overlay transition="dialog-bottom-transition">
-      <v-card v-if="nowShop">
-        <v-card-title class="headline">ごはん屋さん編集
-          - <a :href="nowShop.url" target="_blank" rel="noopener noreferrer">食べログ</a>
-          - <a :href="nowShop.url+'dtlmenu/photo/'" target="_blank" rel="noopener noreferrer">メニュー</a>
-          </v-card-title>
-        <v-card-text>
-          <v-form ref="editform"><v-layout row wrap>
-            <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
-            <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
-            <template v-for="(menu, i) in nowShop.menus">
-              <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @change="changedShop" label="税込値段"></v-text-field></v-flex>
-              <v-flex xs7 :key="'menun'+i"><v-text-field v-model="menu.name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
-              <template v-if="i == nowShop.menus.length - 1">
-                <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''">追加</v-btn></v-flex>
-                <v-flex xs1 :key="'menur'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0">削除</v-btn></v-flex>
-              </template>
-              <template v-else>
-                <v-flex xs2 :key="'menuz'+i"></v-flex>
-              </template>
-            </template>
-            <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"></v-text-field></v-flex>
+    <Nav :filters="filters" :show="navShow" @quit="navShow=false"
+         @updateFilter="updateFilter"></Nav>
+
+    <v-content>
+      <v-container>
+        <div class="cards">
+          <Shop style="margin: 2mm" v-for="(shop, i) in shops" :key="shop.id" :info="shop"
+              @click.native="editShop(i)"></Shop>
+        </div>
+        <NewShop @addShop="addShop"
+                :show="newShopShow" @quit="newShopShow=false"></NewShop>
+
+        <v-dialog v-model="editDialog" hide-overlay transition="dialog-bottom-transition">
+          <v-card v-if="nowShop">
+            <v-card-title class="headline">ごはん屋さん編集
+              - <a :href="nowShop.url" target="_blank" rel="noopener noreferrer">食べログ</a>
+              - <a :href="nowShop.url+'dtlmenu/photo/'" target="_blank" rel="noopener noreferrer">メニュー</a>
+              </v-card-title>
+            <v-card-text>
+              <v-form ref="editform"><v-layout row wrap>
+                <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
+                <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
+                <template v-for="(menu, i) in nowShop.menus">
+                  <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @change="changedShop" label="税込値段"></v-text-field></v-flex>
+                  <v-flex xs7 :key="'menun'+i"><v-text-field v-model="menu.name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
+                  <template v-if="i == nowShop.menus.length - 1">
+                    <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''">追加</v-btn></v-flex>
+                    <v-flex xs1 :key="'menur'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0">削除</v-btn></v-flex>
+                  </template>
+                  <template v-else>
+                    <v-flex xs2 :key="'menuz'+i"></v-flex>
+                  </template>
+                </template>
+                <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"></v-text-field></v-flex>
 
 
-            <v-flex xs12><v-text-field v-model="nowShop.open_time" @change="changedShop" label="開店時間情報" disabled></v-text-field></v-flex>
-            <v-flex xs2><v-text-field @change="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
-            <v-flex xs2><v-text-field @change="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻(LO)"></v-text-field></v-flex>
-            <v-flex xs2><v-switch v-model="openRest" label="昼休みあり"></v-switch></v-flex>
+                <v-flex xs12><v-text-field v-model="nowShop.open_time" @change="changedShop" label="開店時間情報" disabled></v-text-field></v-flex>
+                <v-flex xs2><v-text-field @change="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
+                <v-flex xs2><v-text-field @change="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻(LO)"></v-text-field></v-flex>
+                <v-flex xs2><v-switch v-model="openRest" label="昼休みあり"></v-switch></v-flex>
 
-            <v-flex xs2><v-text-field @change="changedShop" v-model="nightStartTime" label="夜開始時刻" :messages="nightStartTimeErr" :disabled="!openRest"></v-text-field></v-flex>
-            <v-flex xs2><v-text-field @change="changedShop" v-model="nightEndTime" label="夜終了時刻(30h法)" :messages="nightEndTimeErr" :disabled="!openRest"></v-text-field></v-flex>
-            <v-flex xs2></v-flex>
+                <v-flex xs2><v-text-field @change="changedShop" v-model="nightStartTime" label="夜開始時刻" :messages="nightStartTimeErr" :disabled="!openRest"></v-text-field></v-flex>
+                <v-flex xs2><v-text-field @change="changedShop" v-model="nightEndTime" label="夜終了時刻(30h法)" :messages="nightEndTimeErr" :disabled="!openRest"></v-text-field></v-flex>
+                <v-flex xs2></v-flex>
 
-            <v-flex xs12><v-text-field v-model="nowShop.close_day" @change="changedShop" label="定休日情報" disabled=""></v-text-field></v-flex>
-            <v-flex xs12><v-text-field v-model="nowShop.f_open_desc" @change="changedShop" 
-              label="定休日補足 [木,土: -22:00]など"></v-text-field></v-flex>
-            <v-flex xs1 v-for="(day, i) in nowShop.f_open_day" :key="'day'+i">
-              <v-select :label="'月火水木金土日'.split('')[i]+'曜日'"
-                        v-model="nowShop.f_open_day[i]"
-                        :items="[{value:-1,text:'不明'},{value:0, text:'休み'},{value:1, text:'営業'},{value:2,text:'補足'}]"
-                         @change="changedShop"></v-select></v-flex>
-            <v-flex xs5><v-btn @click="allDayOpen">全営業</v-btn></v-flex>
-            <v-flex xs12><v-text-field v-model="nowShop.genre" @change="changedShop" label="ジャンル"></v-text-field></v-flex>
-          </v-layout></v-form>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </v-container>
+                <v-flex xs12><v-text-field v-model="nowShop.close_day" @change="changedShop" label="定休日情報" disabled=""></v-text-field></v-flex>
+                <v-flex xs12><v-text-field v-model="nowShop.f_open_desc" @change="changedShop" 
+                  label="定休日補足 [木,土: -22:00]など"></v-text-field></v-flex>
+                <v-flex xs1 v-for="(day, i) in nowShop.f_open_day" :key="'day'+i">
+                  <v-select :label="'月火水木金土日'.split('')[i]+'曜日'"
+                            v-model="nowShop.f_open_day[i]"
+                            :items="[{value:-1,text:'不明'},{value:0, text:'休み'},{value:1, text:'営業'},{value:2,text:'補足'}]"
+                            @change="changedShop"></v-select></v-flex>
+                <v-flex xs5><v-btn @click="allDayOpen">全営業</v-btn></v-flex>
+                <v-flex xs12><v-text-field v-model="nowShop.genre" @change="changedShop" label="ジャンル"></v-text-field></v-flex>
+              </v-layout></v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
 import Shop from "./Shop"
 import NewShop from "./NewShop"
+import Nav from "./Nav"
+
+import qs from "qs";
 
   let db = undefined;
   let db_shops = undefined;
@@ -106,9 +127,11 @@ import NewShop from "./NewShop"
       endTimeErr: "",
       nightStartTimeErr: "",
       nightEndTimeErr: "",
+
+      navShow: false
     }),
     components: {
-      Shop, NewShop
+      Shop, NewShop, Nav
     },
     computed: {
       nowShop() {
@@ -137,6 +160,25 @@ import NewShop from "./NewShop"
           get(){return validTimeGet(this, 2)}},
       nightEndTime : {set(v){validTimeSet(this, 3,v,"nightEndTimeErr")},
           get(){return validTimeGet(this, 3)}},
+      query: {
+        get(){
+          console.log("query",window.location.search,qs.parse(window.location.search.substr(1)));
+          return qs.parse(window.location.search.substr(1));},
+        set(s){
+          console.log("SSS", s); 
+          const q  = qs.stringify(s);
+          console.log("SS", q); 
+          var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + q;
+          window.history.pushState({path:newurl},'',newurl);
+        },
+      },
+      filters: { get() {
+        if (this.query.filter)
+          return this.query.filter;
+        else
+          return ["","",""] ;
+        },
+        set(s) { console.log("FSet"); this.$set(this.query, "filter", s); this.query=this.query; }},
     },
     methods: {
       editShop(index) {
@@ -165,6 +207,11 @@ import NewShop from "./NewShop"
           this.$set(this.nowShop.f_open_day, i, 1);
         }
         this.changedShop();
+      },
+      updateFilter(i, s) {
+        console.log("updateFilter");
+        this.filters[i] = s;
+        this.filters = this.filters;
       }
     },
     mounted() {

@@ -13,6 +13,7 @@
     "cheerio": "^1.0.0-rc.3",
     "core-js": "^2.6.5",
     "material-design-icons-iconfont": "^3.0.3",
+    "qs": "^6.7.0",
     "request-promise": "^4.2.4",
     "roboto-fontface": "^0.10.0",
     "tokoro": "^0.2.1",
@@ -45,7 +46,12 @@
     ],
     "rules": {
       "no-console": 0,
-      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"
