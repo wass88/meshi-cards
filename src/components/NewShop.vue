@@ -24,7 +24,7 @@
         <v-btn color="green darken-1" flat @click="$emit('quit')">キャンセル</v-btn>
         <v-spacer/>
         <v-btn color="green darken-1" flat @click="$emit('quit')" disabled>無から</v-btn>
-        <v-btn color="green darken-1" flat @click="newShopFromTabelog()" :disabled="disTabelogBtn">食べログから</v-btn>
+        <v-btn color="green darken-1" flat @click="newShopFromTabelog()" :disabled="!newShopInfo || disTabelogBtn">食べログから</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
