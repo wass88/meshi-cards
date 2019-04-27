@@ -162,12 +162,9 @@ import qs from "qs";
           get(){return validTimeGet(this, 3)}},
       query: {
         get(){
-          console.log("query",window.location.search,qs.parse(window.location.search.substr(1)));
           return qs.parse(window.location.search.substr(1));},
         set(s){
-          console.log("SSS", s); 
           const q  = qs.stringify(s);
-          console.log("SS", q); 
           var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + q;
           window.history.pushState({path:newurl},'',newurl);
         },
@@ -178,7 +175,7 @@ import qs from "qs";
         else
           return ["","",""] ;
         },
-        set(s) { console.log("FSet"); this.$set(this.query, "filter", s); this.query=this.query; }},
+        set(s) { this.$set(this.query, "filter", s); this.query=this.query; }},
     },
     methods: {
       editShop(index) {
