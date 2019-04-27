@@ -214,7 +214,7 @@ export default {
   flex-grow: 1;
   background-color: hsl(50, 100%, 86%);
   font-size: 3mm;
-  padding: 3mm;
+  padding: 2mm;
 }
 .menu {
   margin-bottom: 1mm;
@@ -236,8 +236,9 @@ export default {
   background-color: hsl(50, 100%, 86%);
   font-weight: 300;
   font-size: 3mm;
-  padding-left: 3mm;
-  padding-bottom: 3mm;
+  padding-left: 2mm;
+  padding-right: 2mm;
+  padding-bottom: 2mm;
 }
 
 .footer {
