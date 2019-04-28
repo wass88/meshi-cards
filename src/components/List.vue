@@ -2,11 +2,11 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title class="headline">
-        <span>飯カードα (データ吹っ飛ぶかも)</span>
+        <span>飯カードα</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-      <v-btn flat @click="$refs.list.newShopShow=true">カード作成</v-btn>
+      <v-btn flat @click="newShopShow=true">カード作成</v-btn>
       <v-btn flat @click="navShow=true">フィルタ</v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -16,8 +16,10 @@
 
     <v-content>
       <v-container>
-        <div class="cards">
-          <Shop style="margin: 2mm" v-for="(shop, i) in shops" :key="shop.id" :info="shop"
+        <div v-if="shops" class="cards">
+          <Shop style="margin: 2mm" v-for="i in filteredShops[0]" :key="shops[i].id" :info="shops[i]"
+              @click.native="editShop(i)"></Shop>
+          <Shop style="margin: 2mm; opacity: 0.5;" v-for="i in filteredShops[1]" :key="shops[i].id" :info="shops[i]"
               @click.native="editShop(i)"></Shop>
         </div>
         <NewShop @addShop="addShop"
@@ -82,6 +84,8 @@ import Nav from "./Nav"
 
 import qs from "qs";
 
+import shop_filter from "./shop_filter.js"
+
   let db = undefined;
   let db_shops = undefined;
   let deChangeShop = undefined;
@@ -128,7 +132,8 @@ import qs from "qs";
       nightStartTimeErr: "",
       nightEndTimeErr: "",
 
-      navShow: false
+      navShow: false,
+      time: 0,
     }),
     components: {
       Shop, NewShop, Nav
@@ -174,8 +179,32 @@ import qs from "qs";
           return this.query.filter;
         else
           return ["","",""] ;
-        },
-        set(s) { this.$set(this.query, "filter", s); this.query=this.query; }},
+        }, set(s) { 
+          this.$set(this.query, "filter", s);
+          this.query=this.query;
+          this.time+=1;
+        }
+      },
+      filteredShops() {
+        this.time + 1; //TODO:
+        const select = [];
+        const reject = [];
+        const date = new Date();
+        const set = {
+          now: date.getHours()*60+date.getMinutes(),
+          week: (date.getDay()-1+7)%7,
+          pos: [35.028857, 135.779329],
+        };
+        this.shops.forEach((s, i) => {
+          const k = this.filters.every(fn => shop_filter.filters(fn)(s, set));
+          if(k) {
+            select.push(i);
+          } else {
+            reject.push(i);
+          }
+        })
+        return [select, reject];
+      },
     },
     methods: {
       editShop(index) {
@@ -206,10 +235,9 @@ import qs from "qs";
         this.changedShop();
       },
       updateFilter(i, s) {
-        console.log("updateFilter");
         this.filters[i] = s;
         this.filters = this.filters;
-      }
+      },
     },
     mounted() {
       db = window.firebase.firestore();
