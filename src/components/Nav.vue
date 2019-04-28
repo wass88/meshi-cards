@@ -36,7 +36,9 @@ export default {
       ],
       placeFilters: [
         { text: "すべて", value: "" },
+        { text: "400m未満(徒歩5分)", value: "in400m" },
         { text: "800m未満(徒歩10分)", value: "in800m" },
+        { text: "1200m未満(徒歩15分)", value: "in1200m" },
       ],
       genreFilters: [
         { text: "すべて", value: "" },

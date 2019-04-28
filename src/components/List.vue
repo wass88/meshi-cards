@@ -133,6 +133,7 @@ import shop_filter from "./shop_filter.js"
       nightEndTimeErr: "",
 
       navShow: false,
+      location: [35.028857, 135.779329],
       time: 0,
     }),
     components: {
@@ -193,7 +194,7 @@ import shop_filter from "./shop_filter.js"
         const set = {
           now: date.getHours()*60+date.getMinutes(),
           week: (date.getDay()-1+7)%7,
-          pos: [35.028857, 135.779329],
+          pos: this.location,
         };
         this.shops.forEach((s, i) => {
           const k = this.filters.every(fn => shop_filter.filters(fn)(s, set));
@@ -253,6 +254,10 @@ import shop_filter from "./shop_filter.js"
             this.$set(this.shops, index, data);
           }
         });
+      });
+      navigator.geolocation.getCurrentPosition(c=>{
+        console.log(c);
+        this.location = [c.coords.latitude, c.coords.longitude];
       });
     }
   }
