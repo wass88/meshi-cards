@@ -253,9 +253,10 @@ export default {
 .opendesc {
   margin-top: -1mm;
   margin-left: 0.6mm;
+  font-size: 3mm;
 }
 .dayline {
-  height: 9mm;
+  height: 8mm;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -264,8 +265,7 @@ export default {
 
 .dayinfo {
   width: 5mm;
-  height: 5mm;
-  border-right: 0.3mm #eee solid;
+  height: 4mm;
 }
 
 .opentime {
@@ -274,7 +274,7 @@ export default {
 
 .dayinfo .day_full {
   margin-top: -5.2mm;
-  line-height: 5mm;
+  line-height: 4mm;
   text-align: center;
 }
 .week {
