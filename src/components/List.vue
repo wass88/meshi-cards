@@ -22,7 +22,7 @@
           <Shop style="margin: 2mm; opacity: 0.5;" v-for="i in filteredShops[1]" :key="shops[i].id" :info="shops[i]"
               @click.native="editShop(i)"></Shop>
         </div>
-        <NewShop @addShop="addShop"
+        <NewShop @addShop="addShop" :shops="shops"
                 :show="newShopShow" @quit="newShopShow=false"></NewShop>
 
         <v-dialog v-model="editDialog" hide-overlay transition="dialog-bottom-transition">
