@@ -17,7 +17,6 @@
       </v-list>
     </v-toolbar>
 
-    <v-divider></v-divider>
 
 
   </v-navigation-drawer>
@@ -42,6 +41,7 @@ export default {
       genreFilters: [
         { text: "すべて", value: "" },
         { text: "洋食", value: "genre洋食" },
+        { text: "中華", value: "genre中華" },
         { text: "ハンバーグ", value: "genreハンバーグ" },
         { text: "ラーメン", value: "genreラーメン" },
         { text: "牛丼", value: "genre牛丼" },
