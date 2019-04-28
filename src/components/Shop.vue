@@ -139,7 +139,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   font-size: 4mm;
-  background-color: hsl(50, 100%, 14%);
+  background-color: black;
 }
 .header {
   /*font-size: 6mm;*/
@@ -181,6 +181,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   height: 8mm;
+  border-top-right-radius: 3px;
+  background: hsl(50, 100%, 14%);
 }
 .name_str{
 
@@ -244,6 +246,9 @@ export default {
 
 .footer {
   color: #eee;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background: hsl(50, 100%, 14%);
 }
 .opendesc {
   margin-top: -1mm;
