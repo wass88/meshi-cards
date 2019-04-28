@@ -26,6 +26,11 @@ export default {
     }
     const res = defs[name];
     if(res) return res;
+    const m = name.match(/^genre(.+)$/);
+    if(m){
+      const name = m[1];
+      return (shop, _conf) => shop.genre.trim() === name.trim();
+    }
     throw "Missing Filter";
   }
 };

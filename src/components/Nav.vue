@@ -42,6 +42,12 @@ export default {
       genreFilters: [
         { text: "すべて", value: "" },
         { text: "洋食", value: "genre洋食" },
+        { text: "ハンバーグ", value: "genreハンバーグ" },
+        { text: "ラーメン", value: "genreラーメン" },
+        { text: "牛丼", value: "genre牛丼" },
+        { text: "そばうどん", value: "genreそばうどん" },
+        { text: "カレー", value: "genreカレー" },
+        { text: "パン屋", value: "genreパン屋" },
       ]
     });
   },
