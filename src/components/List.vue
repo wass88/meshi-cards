@@ -1,5 +1,9 @@
 <template>
   <v-app>
+    <Nav :filters="filters" :show="navShow" @quit="navShow=false"
+        style="position: fixed; height: 100vh;"
+        @updateFilter="updateFilter"></Nav>
+
     <v-toolbar app>
       <v-toolbar-title class="headline">
         <span>飯カードα</span>
@@ -10,9 +14,6 @@
       <v-btn flat @click="navShow=true">フィルタ</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-
-    <Nav :filters="filters" :show="navShow" @quit="navShow=false"
-         @updateFilter="updateFilter"></Nav>
 
     <v-content>
       <v-container>
