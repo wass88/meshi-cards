@@ -33,7 +33,8 @@
               </v-card-title>
             <v-card-text>
               <v-form ref="editform"><v-layout row wrap>
-                <v-flex xs12><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
+                <v-flex xs10><v-text-field v-model="nowShop.name" @change="changedShop" label="名前"></v-text-field></v-flex>
+                <v-flex xs2><v-text-field v-model="nowShop.genre" @change="changedShop" label="ジャンル"></v-text-field></v-flex>
                 <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @change="changedShop" label="画像URL"></v-text-field></v-flex>
                 <template v-for="(menu, i) in nowShop.menus">
                   <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @change="changedShop" label="税込値段"></v-text-field></v-flex>
@@ -46,10 +47,10 @@
                     <v-flex xs2 :key="'menuz'+i"></v-flex>
                   </template>
                 </template>
-                <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"></v-text-field></v-flex>
+                <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"
+                    :messages="nowShop.open_time + ' | ' + nowShop.close_day"
+                ></v-text-field></v-flex>
 
-
-                <v-flex xs12><v-text-field v-model="nowShop.open_time" @change="changedShop" label="開店時間情報" disabled></v-text-field></v-flex>
                 <v-flex xs2><v-text-field @change="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
                 <v-flex xs2><v-text-field @change="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻(LO)"></v-text-field></v-flex>
                 <v-flex xs2><v-switch v-model="openRest" label="昼休みあり"></v-switch></v-flex>
@@ -58,16 +59,15 @@
                 <v-flex xs2><v-text-field @change="changedShop" v-model="nightEndTime" label="夜終了時刻(30h法)" :messages="nightEndTimeErr" :disabled="!openRest"></v-text-field></v-flex>
                 <v-flex xs2></v-flex>
 
-                <v-flex xs12><v-text-field v-model="nowShop.close_day" @change="changedShop" label="定休日情報" disabled=""></v-text-field></v-flex>
                 <v-flex xs12><v-text-field v-model="nowShop.f_open_desc" @change="changedShop" 
-                  label="定休日補足 [木,土: -22:00]など"></v-text-field></v-flex>
+                  label="定休日補足 [木,土: -22:00]など"
+                  ></v-text-field></v-flex>
                 <v-flex xs1 v-for="(day, i) in nowShop.f_open_day" :key="'day'+i">
                   <v-select :label="'月火水木金土日'.split('')[i]+'曜日'"
                             v-model="nowShop.f_open_day[i]"
                             :items="[{value:-1,text:'不明'},{value:0, text:'休み'},{value:1, text:'営業'},{value:2,text:'補足'}]"
                             @change="changedShop"></v-select></v-flex>
                 <v-flex xs5><v-btn @click="allDayOpen">全営業</v-btn></v-flex>
-                <v-flex xs12><v-text-field v-model="nowShop.genre" @change="changedShop" label="ジャンル"></v-text-field></v-flex>
               </v-layout></v-form>
             </v-card-text>
           </v-card>
