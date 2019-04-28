@@ -239,6 +239,7 @@ export default {
   padding-left: 2mm;
   padding-right: 2mm;
   padding-bottom: 2mm;
+  text-align: justify;
 }
 
 .footer {
