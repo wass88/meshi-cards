@@ -48,7 +48,7 @@
                   </template>
                 </template>
                 <v-flex xs12><v-text-field v-model="nowShop.flavor" @change="changedShop" label="フレーバー"
-                    :messages="nowShop.open_time + ' | ' + nowShop.close_day"
+                    :messages="nowShop.open_time + ' | 休: ' + nowShop.close_day"
                 ></v-text-field></v-flex>
 
                 <v-flex xs2><v-text-field @change="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
