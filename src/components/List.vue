@@ -40,8 +40,8 @@
                   <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @change="changedShop" label="税込値段"></v-text-field></v-flex>
                   <v-flex xs7 :key="'menun'+i"><v-text-field v-model="menu.name" @change="changedShop" label="メニュー"></v-text-field></v-flex>
                   <template v-if="i == nowShop.menus.length - 1">
-                    <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''">追加</v-btn></v-flex>
-                    <v-flex xs1 :key="'menur'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0">削除</v-btn></v-flex>
+                    <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''" icon flat><v-icon>add_circle</v-icon></v-btn></v-flex>
+                    <v-flex xs1 :key="'menur'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0" icon flat><v-icon>remove_circle</v-icon></v-btn></v-flex>
                   </template>
                   <template v-else>
                     <v-flex xs2 :key="'menuz'+i"></v-flex>
@@ -107,7 +107,6 @@ import shop_filter from "./shop_filter.js"
   const validTimeSet = (t,i,v,e) => {
           const m = v.match(/(\d?\d):(\d\d)/);
           if (!m) { t[e]="must be like 12:30, 18:12"; return; }
-          console.log(m[1], m[2], (0|m[1])*60 + (0|m[2]));
           t.$set(t.nowShop.f_open_times, i, (0|m[1])*60 + (0|m[2]));
           t[e]="";};
   const validTimeGet = (s,i) => {
