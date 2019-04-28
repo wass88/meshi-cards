@@ -218,7 +218,7 @@ import shop_filter from "./shop_filter.js"
       },
       changedShop() {
         deChangeShop = deChangeShop || window.debounce(()=>{
-          db_shops.doc(this.nowShop.id).update(this.nowShop);
+          db_shops.doc(this.nowShop.id).update(this.nowShop).catch(e=>window.alert("Error:" + e));
         }, 500);
         deChangeShop();
       },
@@ -250,9 +250,7 @@ import shop_filter from "./shop_filter.js"
           if (index == -1) {
             this.shops.push({id:doc.id, ...data});
           } else {
-            if(source == "Server") {
-              this.$set(this.shops, index, data);
-            }
+            this.$set(this.shops, index, data);
           }
         });
       });
