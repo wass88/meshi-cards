@@ -36,9 +36,12 @@ export default {
       ],
       placeFilters: [
         { text: "すべて", value: "" },
-        { text: "400m未満(徒歩5分)", value: "in400m" },
-        { text: "800m未満(徒歩10分)", value: "in800m" },
-        { text: "1200m未満(徒歩15分)", value: "in1200m" },
+        { text: "400m以下(徒歩5分)", value: "in400m" },
+        { text: "800m以下(徒歩10分)", value: "in800m" },
+        { text: "1200m以下(徒歩15分)", value: "in1200m" },
+        { text: "2000m以下(自転車10分)", value: "in2000m" },
+        { text: "3000m以下(自転車15分)", value: "in3000m" },
+        { text: "4000m以下(自転車20分)", value: "in4000m" },
       ],
       genreFilters: [
         { text: "すべて", value: "" },

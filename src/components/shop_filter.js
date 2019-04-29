@@ -14,7 +14,6 @@ function dis(shop, pos) {
   const xR = R * Math.cos(pos[0]/180*Math.PI)
   const y = Math.abs(shop_pos[0] - pos[0]) / 360 * R;
   const x = Math.abs(shop_pos[1] - pos[1]) / 360 * xR;
-  console.log(shop.name, x+y, x, y, xR, shop_pos);
   return x + y;
 }
 export default {
@@ -29,10 +28,15 @@ export default {
     }
     const res = defs[name];
     if(res) return res;
-    const m = name.match(/^genre(.+)$/);
-    if(m){
-      const name = m[1];
+    const m1 = name.match(/^genre(.+)$/);
+    if(m1){
+      const name = m1[1];
       return (shop, _conf) => shop.genre.trim() === name.trim();
+    }
+    const m2 = name.match(/^in(\d+)m$/);
+    if(m2){
+      const d = 0|m2[1];
+      return (shop, conf) =>  dis(shop, conf.pos) <= d;
     }
     throw "Missing Filter";
   }
