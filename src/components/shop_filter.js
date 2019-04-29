@@ -4,9 +4,12 @@ function isOpen(shop, now, week) {
   const today = days[week] != 0;
   const tomorrow = days[(week -1+6)%7] != 0;
   
-  return (today && (t[0] <= now && now < t[1] ||
-         t[2] && t[2] <= now && now < t[3])) ||
-         (tomorrow && t[2] && t[2] >= 24*60 && now < t[3] - 24*60);
+  return (today && (
+                    t[0] <= now && now < t[1] ||
+            t[2] && t[2] <= now && now < t[3])) ||
+         (tomorrow && (
+                    t[1] >= 24*60 && now < t[1] - 24*60 ||
+            t[3] && t[3] >= 24*60 && now < t[3] - 24*60));
 }
 function dis(shop, pos) {
   const shop_pos = shop.location;
