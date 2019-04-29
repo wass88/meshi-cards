@@ -16,7 +16,7 @@
     </v-toolbar>
 
     <v-content>
-      <v-container>
+      <v-container style="max-width: initial;">
         <div v-if="shops" class="cards">
           <Shop style="margin: 2mm" v-for="i in filteredShops[0]" :key="shops[i].id" :info="shops[i]"
               @click.native="editShop(i)"></Shop>
