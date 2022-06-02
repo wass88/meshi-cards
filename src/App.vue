@@ -1,19 +1,17 @@
 <template>
-  <List ref="list"/>
+  <List ref="list" />
 </template>
 
 <script>
-
-import List from './components/List';
+import List from "./components/List";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     List,
   },
   data() {
-    return {
-    };
+    return {};
   },
 };
 </script>
