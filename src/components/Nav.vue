@@ -14,6 +14,9 @@
         <v-list-tile>
           <v-select :value="filters[2]" @input="$emit('updateFilter',2,$event)" label="ジャンル" :items="genreFilters"></v-select>
         </v-list-tile>
+        <v-list-tile>
+          <v-btn block @click="login">Login</v-btn>
+        </v-list-tile>
       </v-list>
     </v-toolbar>
 
@@ -59,6 +62,9 @@ export default {
   computed: {
   },
   methods: {
+    login() {
+      this.$emit("login")
+    }
   }
 }
 </script>

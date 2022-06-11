@@ -23,63 +23,18 @@
           <Shop style="margin: 2mm; opacity: 0.5;" v-for="i in filteredShops[1]" :key="shops[i].id" :info="shops[i]"
               @click.native="editShop(i)"></Shop>
         </div>
-        <NewShop @addShop="addShop" :shops="shops"
-                :show="newShopShow" @quit="newShopShow=false"></NewShop>
-
-        <v-dialog v-model="editDialog" hide-overlay transition="dialog-bottom-transition">
-          <v-card v-if="nowShop">
-            <v-card-title class="headline">ごはん屋さん編集
-              - <a :href="nowShop.url" target="_blank" rel="noopener noreferrer">食べログ</a>
-              - <a :href="nowShop.url+'dtlmenu/photo/'" target="_blank" rel="noopener noreferrer">メニュー</a>
-              </v-card-title>
-            <v-card-text>
-              <v-form ref="editform"><v-layout row wrap>
-                <v-flex xs10><v-text-field v-model="nowShop.name" @input="changedShop" label="名前"></v-text-field></v-flex>
-                <v-flex xs2><v-text-field v-model="nowShop.genre" @input="changedShop" label="ジャンル"></v-text-field></v-flex>
-                <v-flex xs12><v-text-field v-model="nowShop.menus[0].img" @input="changedShop" label="画像URL"></v-text-field></v-flex>
-                <template v-for="(menu, i) in nowShop.menus">
-                  <v-flex xs3 :key="'menup'+i"><v-text-field type="number" v-model="menu.price" @input="changedShop" label="税込値段"></v-text-field></v-flex>
-                  <v-flex xs7 :key="'menun'+i"><v-text-field v-model="menu.name" @input="changedShop" label="メニュー"></v-text-field></v-flex>
-                  <template v-if="i == nowShop.menus.length - 1">
-                    <v-flex xs1 :key="'menua'+i"><v-btn color="success" @click="addMenu" :disabled="menu.name==''" icon flat><v-icon>add_circle</v-icon></v-btn></v-flex>
-                    <v-flex xs1 :key="'menur'+i"><v-btn color="error" @click="removeMenu" :disabled="i==0" icon flat><v-icon>remove_circle</v-icon></v-btn></v-flex>
-                  </template>
-                  <template v-else>
-                    <v-flex xs2 :key="'menuz'+i"></v-flex>
-                  </template>
-                </template>
-                <v-flex xs12><v-text-field v-model="nowShop.flavor" @input="changedShop" label="フレーバー"
-                    :messages="nowShop.open_time + ' | 休: ' + nowShop.close_day"
-                ></v-text-field></v-flex>
-
-                <v-flex xs2><v-text-field @input="changedShop" v-model="startTime" :messages="startTimeErr" label="開始時刻"></v-text-field></v-flex>
-                <v-flex xs2><v-text-field @input="changedShop" v-model="endTime" :messages="endTimeErr" label="終了時刻(LO)"></v-text-field></v-flex>
-                <v-flex xs2><v-switch v-model="openRest" label="昼休みあり"></v-switch></v-flex>
-
-                <v-flex xs2><v-text-field @input="changedShop" v-model="nightStartTime" label="夜開始時刻" :messages="nightStartTimeErr" :disabled="!openRest"></v-text-field></v-flex>
-                <v-flex xs2><v-text-field @input="changedShop" v-model="nightEndTime" label="夜終了時刻(30h法)" :messages="nightEndTimeErr" :disabled="!openRest"></v-text-field></v-flex>
-                <v-flex xs2></v-flex>
-
-                <v-flex xs12><v-text-field v-model="nowShop.f_open_desc" @input="changedShop" 
-                  label="定休日補足 [木,土: -22:00]など"
-                  ></v-text-field></v-flex>
-                <v-flex xs1 v-for="(day, i) in nowShop.f_open_day" :key="'day'+i">
-                  <v-select :label="'月火水木金土日'.split('')[i]+'曜日'"
-                            v-model="nowShop.f_open_day[i]"
-                            :items="[{value:-1,text:'不明'},{value:0, text:'休み'},{value:1, text:'営業'},{value:2,text:'補足'}]"
-                            @input="changedShop"></v-select></v-flex>
-                <v-flex xs5><v-btn @click="allDayOpen">全営業</v-btn></v-flex>
-              </v-layout></v-form>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
       </v-container>
     </v-content>
+    <NewShop @addShop="addShop" :shops="shops"
+            :show="newShopShow" @quit="newShopShow=false"></NewShop>
+
+    <EditShop :shop="nowShop" :show="editDialog" @changedShop="changedShop" @quit="editDialog=false"></EditShop>
   </v-app>
 </template>
 
 <script>
 import Shop from "./Shop"
+import EditShop from "./EditShop"
 import NewShop from "./NewShop"
 import Nav from "./Nav"
 
@@ -125,16 +80,6 @@ function shuffle(array) {
         flavor: "コスパの良い揚げ物屋"
       };
   */
-  const validTimeSet = (t,i,v,e) => {
-          const m = v.match(/(\d?\d):(\d\d)/);
-          if (!m) { t[e]="must be like 12:30, 18:12"; return; }
-          t.$set(t.nowShop.f_open_times, i, (0|m[1])*60 + (0|m[2]));
-          t[e]="";};
-  const validTimeGet = (s,i) => {
-          if(!s.nowShop) return;
-          const t = s.nowShop.f_open_times[i]
-          const h = 0|(t/60), m = t%60;
-          return h+":"+((m<10)?"0":"")+m; };
 
   export default {
     data: () => ({
@@ -146,46 +91,17 @@ function shuffle(array) {
       editCurrent: 0,
       delay: 500,
 
-      openTimeDay: [1,1,1,1,1,1,1],
-      startTimeErr: "",
-      endTimeErr: "",
-      nightStartTimeErr: "",
-      nightEndTimeErr: "",
-
       navShow: false,
       location: [35.028857, 135.779329],
       time: 0,
     }),
     components: {
-      Shop, NewShop, Nav
+      Shop, NewShop, Nav, EditShop
     },
     computed: {
       nowShop() {
         return this.shops[this.editCurrent];
       },
-      openRest: {set(v){
-        if(v) {
-          if(this.nowShop.f_open_times.length <= 2){
-            this.nowShop.f_open_times.push(1234);
-            this.nowShop.f_open_times.push(1434);
-          }
-        } else {
-          if(this.nowShop.f_open_times.length > 2){
-            this.nowShop.f_open_times.pop();
-            this.nowShop.f_open_times.pop();
-          }
-        }
-      },get() {
-        return this.nowShop.f_open_times.length > 2;
-      }},
-      startTime : {set(v){validTimeSet(this, 0,v, "startTimeErr")},
-          get(){return validTimeGet(this, 0)}},
-      endTime : {set(v){validTimeSet(this, 1,v,"endTimeErr")},
-          get(){return validTimeGet(this, 1)}},
-      nightStartTime : {set(v){validTimeSet(this, 2,v,"nightStartTimeErr")},
-          get(){return validTimeGet(this, 2)}},
-      nightEndTime : {set(v){validTimeSet(this, 3,v,"nightEndTimeErr")},
-          get(){return validTimeGet(this, 3)}},
       query: {
         get(){
           return qs.parse(window.location.search.substr(1));},
@@ -248,12 +164,6 @@ function shuffle(array) {
       },
       removeMenu() {
         this.nowShop.menus.pop();
-      },
-      allDayOpen() {
-        for (let i = 0; i < 7; i++) {
-          this.$set(this.nowShop.f_open_day, i, 1);
-        }
-        this.changedShop();
       },
       updateFilter(i, s) {
         this.filters[i] = s;
