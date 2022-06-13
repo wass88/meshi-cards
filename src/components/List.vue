@@ -2,7 +2,7 @@
   <v-app>
     <Nav :filters="filters" :show="navShow" @quit="navShow=false"
         style="position: fixed; height: 100vh;"
-        @updateFilter="updateFilter"></Nav>
+        @updateFilter="updateFilter" @login="login" :loginState="loginState"></Nav>
 
     <v-toolbar app>
       <v-toolbar-title class="headline">
@@ -61,6 +61,18 @@ function shuffle(array) {
   return array;
 }
 
+function IsEditor(uid, callback) {
+    const db = window.firebase.firestore();
+    const db_users = db.collection("users");
+    db_users.doc(uid).get().then(doc => {
+        if (doc.exists) {
+            callback(doc.data().type=="editor");
+        } else {
+            callback(false);
+        }
+    });
+}
+
 
   let db = undefined;
   let db_shops = undefined;
@@ -94,6 +106,10 @@ function shuffle(array) {
       navShow: false,
       location: [35.028857, 135.779329],
       time: 0,
+
+      loginState: {
+        state: "init",
+      }
     }),
     components: {
       Shop, NewShop, Nav, EditShop
@@ -169,6 +185,39 @@ function shuffle(array) {
         this.filters[i] = s;
         this.filters = this.filters;
       },
+      login() {
+        this.loginState.state = "waiting";
+        const provider = new window.firebase.auth.GoogleAuthProvider();
+        window.firebase.auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            /** @type {firebase.auth.OAuthCredential} */
+            const credential = result.credential;
+
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            IsEditor(user.uid, (editor) => {
+              if (editor) {
+                this.loginState.state = "editor"
+              } else {
+                this.loginState.state = "visitor"
+              }
+            });
+            console.log({token, user})
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            const credential = error.credential;
+            this.loginState.state = "failed"
+            console.error({errorCode, errorMessage, email, credential})
+          });
+      }
     },
     mounted() {
       db = window.firebase.firestore();

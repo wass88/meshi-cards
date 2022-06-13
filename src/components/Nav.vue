@@ -15,20 +15,21 @@
           <v-select :value="filters[2]" @input="$emit('updateFilter',2,$event)" label="ジャンル" :items="genreFilters"></v-select>
         </v-list-tile>
         <v-list-tile>
-          <v-btn block @click="login">Login</v-btn>
+          <v-btn v-if="loginState.state == 'init'" block @click="login">Login for editors</v-btn>
+          <v-btn v-else-if="loginState.state == 'waiting'" block loading>Login for editors</v-btn>
+          <v-btn v-else-if="loginState.state == 'failed'" block @click="login" color="error">Login Failed</v-btn>
+          <v-btn v-else-if="loginState.state == 'visitor'" block color="error" disabled>You are not an editor</v-btn>
+          <v-btn v-else-if="loginState.state == 'editor'" block disabled>Logined</v-btn>
         </v-list-tile>
       </v-list>
     </v-toolbar>
-
-
-
   </v-navigation-drawer>
 </template>
 
 <script>
 export default {
   props : [
-    "filters", "show"
+    "filters", "show", "loginState"
   ],
   data() {
     return({
