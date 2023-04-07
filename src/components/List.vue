@@ -161,8 +161,12 @@ function IsEditor(uid, callback) {
     },
     methods: {
       editShop(index) {
-        this.editDialog = true;
-        this.editCurrent = index;
+        if (this.loginState.state === "editor") {
+          this.editDialog = true;
+          this.editCurrent = index;
+        } else {
+          console.info("Your are not editor. Need login.")
+        }
       },
       addShop(shop) {
         db_shops.add(shop).then(()=>{
