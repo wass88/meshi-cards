@@ -244,6 +244,24 @@ function IsEditor(uid, callback) {
         console.log(c);
         this.location = [c.coords.latitude, c.coords.longitude];
       });
+
+      // check login
+      this.unsubscribe = window.firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          IsEditor(user.uid, (editor) => {
+            if (editor) {
+              this.loginState.state = "editor"
+            } else {
+              this.loginState.state = "visitor"
+            }
+          });
+        } else {
+          this.loginState.state = "init"
+        }
+      });
+    },
+    unmounted() {
+      this.unsubscribe();
     }
   }
 </script>
