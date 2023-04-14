@@ -5,7 +5,8 @@
         - <a :href="shop.url" target="_blank" rel="noopener noreferrer">食べログ</a>
         - <a :href="shop.url+'dtlmenu/photo/'" target="_blank" rel="noopener noreferrer">メニュー</a>
         </v-card-title>
-      <v-card-text>
+        <v-layout row>
+          <v-flex><v-card-text>
         <v-form ref="editform"><v-layout row wrap>
           <v-flex xs10><v-text-field v-model="shop.name" @input="changedShop" label="名前"></v-text-field></v-flex>
           <v-flex xs2><v-text-field v-model="shop.genre" @input="changedShop" label="ジャンル"></v-text-field></v-flex>
@@ -43,13 +44,19 @@
                         @input="changedShop"></v-select></v-flex>
             <v-flex xs5><v-btn @click="allDayOpen">全営業</v-btn></v-flex>
           </v-layout></v-form>
-        </v-card-text>
+        </v-card-text></v-flex>
+          <v-flex>
+            <Shop :info="shop" style="margin: 5mm"></Shop>
+          </v-flex>
+      </v-layout>
           </v-card>
         </v-dialog>
 
 </template>
 
 <script>
+import Shop from "./Shop"
+
   const validTimeSet = (t,i,v,e) => {
           const m = v.match(/(\d?\d):(\d\d)/);
           if (!m) { t[e]="must be like 12:30, 18:12"; return; }
@@ -67,6 +74,9 @@
         nightStartTimeErr: "",
         nightEndTimeErr: "",
       }),
+    components: {
+      Shop
+    },
       props: {
         shop: {
           type: Object,
