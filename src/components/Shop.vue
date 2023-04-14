@@ -15,8 +15,9 @@
       </div>
     </div>
     <div class="image_cell">
-      <div class="image" :style="{backgroundImage:
-        'url('+(info.menus[0]?info.menus[0].img:'')+')'}"> </div>
+      <div :class="['image', nonHosted ? 'non-hosted' : '']" :style="{
+        backgroundImage: 'url('+(info.menus[0]?info.menus[0].img:'')+')',
+        }"> </div>
       <div class="map">
         <div class="pos" :style="{top: `${posY}`, left:`${posX}`}"> </div>
       </div>
@@ -121,6 +122,9 @@ export default {
         if (d.open) return {full: true, day: "Ｏ"};
         return {full: true, day: "Ｘ"};
       });
+    },
+    nonHosted() {
+      return this.info.menus[0].img.indexOf("tblg.k-img.com") !== -1;
     }
   }
 };
@@ -195,6 +199,11 @@ export default {
   border-bottom: solid 1mm black;
   height: 30mm;
   background-size: cover;
+}
+.non-hosted {
+  box-sizing: border-box;
+  border-right: 1px solid #fc6f03;
+  border-left: 1px solid #fc6f03;
 }
 .map {
   height:20mm;
