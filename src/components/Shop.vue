@@ -124,7 +124,7 @@ export default {
       });
     },
     nonHosted() {
-      return this.info.menus[0].img.indexOf("tblg.k-img.com") !== -1;
+      return this.info.menus[0].img && this.info.menus[0].img.indexOf("gyazo") === -1;
     }
   }
 };
@@ -167,11 +167,11 @@ export default {
   color: #111;
 }
 .cost .cost100 {
-  margin-top: -1mm;
+  margin: -1.3mm 0 0 -0.5mm;
 }
 .cost .costdot {
   margin-top: -10mm;
-  margin-left: 3mm;
+  margin-left: 2.5mm;
 }
 .cost .cost10 {
   margin-top: -9mm;
