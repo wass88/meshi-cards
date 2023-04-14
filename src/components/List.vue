@@ -10,7 +10,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-      <v-btn flat @click="newShopShow=true">カード作成</v-btn>
+      <v-btn flat @click="newShopShow=true" :disabled="!isEditor">カード作成</v-btn>
       <v-btn flat @click="navShow=true">フィルタ</v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -89,7 +89,7 @@ function IsEditor(uid, callback) {
         tags: [
           "定食", "コスパ", "揚げ物"
         ],
-        flavor: "コスパの良い揚げ物屋"
+        flavor: "コスパの揚げ物屋"
       };
   */
 
@@ -158,10 +158,13 @@ function IsEditor(uid, callback) {
         })
         return [shuffle(select), reject];
       },
+      isEditor() {
+        return this.loginState.state === "editor";
+      }
     },
     methods: {
       editShop(index) {
-        if (this.loginState.state === "editor") {
+        if (this.isEditor) {
           this.editDialog = true;
           this.editCurrent = index;
         } else {

@@ -1,5 +1,5 @@
 deploy-function:
-	(cd lib; gcloud beta functions deploy tabelog_shop --trigger-http)
+	(cd lib; gcloud --project meshi-card beta functions deploy tabelog_shop --trigger-http --runtime nodejs18)
 
 build:
 	npm run build
